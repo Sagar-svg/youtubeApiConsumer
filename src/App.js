@@ -1,23 +1,24 @@
-import logo from './logo.svg';
-import './App.css';
+import Header from "./components/Header";
+import Vidcontainer from "./components/Vidcontainer";
+import {useState} from 'react';
 
 function App() {
+  const [list, setList] = useState([])
+  const onSearch = async (search) =>{
+    const getList = await fetch(`http://localhost:8000/api/${search.search}`)
+    const res = await getList.json()
+    // console.log(res)
+    setList(res.videos)
+    //console.log('list', list)
+
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='container'>
+      <Header onSearch = {onSearch}/>
+      <div className='vidcontainer'>
+      <Vidcontainer  vidList={list}/>
+      </div>
     </div>
   );
 }
